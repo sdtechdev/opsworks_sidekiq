@@ -2,4 +2,4 @@
 
 include_recipe "deploy"
 include_recipe "opsworks_sidekiq::service"
-include_recipe "deploy::configure"
+include_recipe "rails::configure"
