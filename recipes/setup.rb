@@ -5,6 +5,13 @@ include_recipe "opsworks_sidekiq::service"
 # setup sidekiq service per app
 node[:deploy].each do |application, deploy|
 
+  case node['platform_family']
+  when 'rhel', 'fedora'
+    monit_conf_dir = '/etc/monit.d'
+  when 'debian'
+    monit_conf_dir = '/etc/monit/conf.d'
+  end
+
   if deploy[:application_type] != 'rails'
     Chef::Log.debug("Skipping opsworks_sidekiq::setup application #{application} as it is not a Rails app")
     next
@@ -61,7 +68,7 @@ node[:deploy].each do |application, deploy|
       end
     end
 
-    template "/etc/monit/conf.d/sidekiq_#{application}.monitrc" do
+    template "#{monit_conf_dir}/sidekiq_#{application}.monitrc" do
       mode 0644
       source "sidekiq_monitrc.erb"
       variables({
