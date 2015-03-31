@@ -27,6 +27,14 @@ node[:deploy].each do |application, deploy|
     path deploy[:deploy_to]
   end
 
+  directory "#{deploy[:deploy_to]}/shared/assets" do
+    group deploy[:group]
+    owner deploy[:user]
+    mode 0775
+    action :create
+    recursive true
+  end
+
   # Allow deploy user to restart workers
   template "/etc/sudoers.d/#{deploy[:user]}" do
     mode 0440
