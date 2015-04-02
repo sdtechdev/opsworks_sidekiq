@@ -5,6 +5,10 @@ include_recipe "opsworks_sidekiq::service"
 # setup sidekiq service per app
 node[:deploy].each do |application, deploy|
 
+  unless node[:sidekiq][application]
+    next
+  end
+
   case node['platform_family']
   when 'rhel', 'fedora'
     monit_conf_dir = '/etc/monit.d'
