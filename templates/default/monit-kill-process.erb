@@ -1,0 +1,5 @@
+#!/bin/bash
+# script run from monit instance
+# this will kill the process found by current check forcefully
+
+kill -9 $MONIT_PROCESS_PID
