@@ -1,3 +1,6 @@
+check process sidekiq_stuck matching "sidekiq.*stopping"
+  if memory is greater than 0 for 3 cycles then exec "/usr/bin/monit-kill-process"
+
 <% @workers.each do |worker, options| %>
   <% (options[:process_count] || 1).times do |n| %>
   <% identifier = "#{@application}-#{worker}#{n+1}" %>
