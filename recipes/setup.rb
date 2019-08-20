@@ -80,6 +80,11 @@ node[:deploy].each do |application, deploy|
       end
     end
 
+    template "/usr/bin/monit-kill-process" do
+      mode 0755
+      source "monit-kill-process.erb"
+    end
+
     template "#{monit_conf_dir}/sidekiq_#{application}.monitrc" do
       mode 0644
       source "sidekiq_monitrc.erb"
@@ -92,6 +97,5 @@ node[:deploy].each do |application, deploy|
       })
       notifies :reload, resources(:service => "monit"), :immediately
     end
-
   end
 end
